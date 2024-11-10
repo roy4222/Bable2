@@ -7,91 +7,95 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bable</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+    <link href="css/output.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         const firebaseConfig = {
-            apiKey: "你的_API_KEY",
-            authDomain: "你的專案網域.firebaseapp.com",
-            projectId: "你的專案ID",
-            storageBucket: "你的儲存桶.appspot.com",
-            messagingSenderId: "你的發送者ID",
-            appId: "你的應用程式ID"
+            apiKey: "AIzaSyBBI9_7d2eQoWA9qGhBx4q-CKizJ2T0ikY",
+            authDomain: "bable1.firebaseapp.com",
+            databaseURL: "https://bable1-default-rtdb.firebaseio.com",
+            projectId: "bable1",
+            storageBucket: "bable1.firebasestorage.app",
+            messagingSenderId: "206369386530",
+            appId: "1:206369386530:web:2fe45b2f2a7470eb80da7b"
         };
 
         // 初始化 Firebase
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        function toggleDropdown(id) {
-            const dropdown = document.getElementById(id);
-            const allDropdowns = document.querySelectorAll('.dropdown-menu');
-            
-            // 關閉其他所有下拉選單
-            allDropdowns.forEach(menu => {
-                if (menu.id !== id && !menu.classList.contains('hidden')) {
-                    menu.classList.add('hidden');
+        // 等待 DOM 完全載入
+        window.addEventListener('DOMContentLoaded', function() {
+            // 下拉選單功能
+            function toggleDropdown(id) {
+                const dropdown = document.getElementById(id);
+                if (dropdown) {
+                    const allDropdowns = document.querySelectorAll('.dropdown-menu');
+                    
+                    allDropdowns.forEach(menu => {
+                        if (menu.id !== id && !menu.classList.contains('hidden')) {
+                            menu.classList.add('hidden');
+                        }
+                    });
+                    
+                    dropdown.classList.toggle('hidden');
                 }
-            });
-            
-            // 切換目前的下拉選單
-            dropdown.classList.toggle('hidden');
-        }
+            }
 
-        // 點擊其他地方時關閉下拉選單
-        document.addEventListener('click', function(event) {
-            const dropdowns = document.querySelectorAll('.dropdown-menu');
-            const dropdownButtons = document.querySelectorAll('.dropdown-button');
-            
-            let clickedDropdown = false;
-            dropdownButtons.forEach(button => {
-                if (button.contains(event.target)) {
-                    clickedDropdown = true;
-                }
-            });
-
-            if (!clickedDropdown) {
-                dropdowns.forEach(dropdown => {
-                    dropdown.classList.add('hidden');
+            // 點擊其他地方時關閉下拉選單
+            document.addEventListener('click', function(event) {
+                const dropdowns = document.querySelectorAll('.dropdown-menu');
+                const dropdownButtons = document.querySelectorAll('.dropdown-button');
+                
+                let clickedDropdown = false;
+                dropdownButtons.forEach(button => {
+                    if (button.contains(event.target)) {
+                        clickedDropdown = true;
+                    }
                 });
-            }
-        });
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const menuContent = menu.querySelector('.fixed.top-0');
-            const body = document.body;
-            
-            menu.classList.toggle('hidden');
-            
-            // 控制選單滑入滑出動畫
-            if (!menu.classList.contains('hidden')) {
-                setTimeout(() => {
-                    menuContent.classList.remove('-translate-y-full');
-                }, 10);
-                body.style.overflow = 'hidden';
-            } else {
-                menuContent.classList.add('-translate-y-full');
-                body.style.overflow = '';
-            }
-        }
+                if (!clickedDropdown) {
+                    dropdowns.forEach(dropdown => {
+                        dropdown.classList.add('hidden');
+                    });
+                }
+            });
 
-        function toggleMobileSubmenu(id) {
-            const submenu = document.getElementById(id);
-            const button = submenu.previousElementSibling;
-            const arrow = button.querySelector('svg');
-            
-            submenu.classList.toggle('hidden');
-            arrow.classList.toggle('rotate-180');
-        }
+            // 移動選單功能
+            window.toggleMobileMenu = function() {
+                const menu = document.getElementById('mobile-menu');
+                if (menu) {
+                    const menuContent = menu.querySelector('.fixed.top-0');
+                    const body = document.body;
+                    
+                    menu.classList.toggle('hidden');
+                    
+                    if (!menu.classList.contains('hidden')) {
+                        setTimeout(() => {
+                            menuContent.classList.remove('-translate-y-full');
+                        }, 10);
+                        body.style.overflow = 'hidden';
+                    } else {
+                        menuContent.classList.add('-translate-y-full');
+                        body.style.overflow = '';
+                    }
+                }
+            };
 
-        // 點擊背景關閉選單
-        document.getElementById('mobile-menu').addEventListener('click', function(e) {
-            if (e.target === this || e.target.classList.contains('backdrop-blur-sm')) {
-                toggleMobileMenu();
+            // 移動選單點擊事件
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.addEventListener('click', function(e) {
+                    if (e.target === this || e.target.classList.contains('backdrop-blur-sm')) {
+                        toggleMobileMenu();
+                    }
+                });
             }
         });
     </script>
@@ -116,6 +120,80 @@ session_start();
     </style>
 </head>
 <body class="min-h-screen flex flex-col text-gray-100">
+    <!-- 修改提示訊息元素的樣式 -->
+    <div id="globalToast" class="fixed top-4 left-1/2 -translate-x-1/2 transform z-[9999] transition-all duration-300 opacity-0 -translate-y-full pointer-events-none">
+        <div class="flex items-center p-6 rounded-lg shadow-xl min-w-[400px] border backdrop-blur-md">
+            <div class="inline-flex items-center justify-center flex-shrink-0 w-10 h-10 me-4">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"></svg>
+            </div>
+            <div class="text-base font-semibold"></div>
+        </div>
+    </div>
+
+    <script>
+    function showGlobalToast(message, type = 'success') {
+        const toast = document.getElementById('globalToast');
+        const icon = toast.querySelector('svg');
+        const text = toast.querySelector('.text-base');
+        const container = toast.querySelector('.flex');
+        
+        // 設置訊息
+        text.textContent = message;
+        
+        // 根據類型設置樣式
+        if (type === 'success') {
+            container.className = 'flex items-center p-6 rounded-lg shadow-xl min-w-[400px] text-green-500 bg-green-100/95 border border-green-200 backdrop-blur-md';
+            icon.innerHTML = '<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>';
+        } else if (type === 'error') {
+            container.className = 'flex items-center p-6 rounded-lg shadow-xl min-w-[400px] text-red-500 bg-red-100/95 border border-red-200 backdrop-blur-md';
+            icon.innerHTML = '<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>';
+        }
+        
+        // 顯示提示
+        toast.classList.remove('opacity-0', '-translate-y-full');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        
+        // 3秒後隱藏
+        setTimeout(() => {
+            toast.classList.add('opacity-0', '-translate-y-full');
+            toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 3000);
+    }
+
+    // 監聽登入、註冊和登出事件
+    document.addEventListener('DOMContentLoaded', function() {
+        // 登入表單
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                // 在表單提交成功後
+                showGlobalToast('登入成功！', 'success');
+            });
+        }
+
+        // 註冊表單
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) {
+            registerForm.addEventListener('submit', function(e) {
+                // 在表單提交成功後
+                showGlobalToast('註冊成功！', 'success');
+            });
+        }
+
+        // 登出按鈕
+        const logoutButton = document.querySelector('a[href="logout.php"]');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                showGlobalToast('登出成功！', 'success');
+                setTimeout(() => {
+                    window.location.href = 'logout.php';
+                }, 1500);
+            });
+        }
+    });
+    </script>
+
     <header class="bg-[#1a242c]/90 backdrop-blur-md border-b border-yellow-900/20 sticky top-0 z-50">
         <nav class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
@@ -176,7 +254,7 @@ session_start();
                         </div>
                     </div>
 
-                    <!-- 科��專區下拉選單 -->
+                    <!-- 科技專區下拉選單 -->
                     <div class="relative group">
                         <button class="text-gray-300 hover:text-yellow-400 font-medium transition duration-300 flex items-center group py-2">
                             科技專區
@@ -212,55 +290,76 @@ session_start();
                         </div>
                     </div>
 
-                    <!-- 登入按鈕 - 修改這部分 -->
-                    <?php if(!isset($_SESSION['loggedin'])): ?>
+                    <!-- 用戶資訊下拉選單 -->
+                    <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+                        <div class="relative" x-data="{ open: false, timeout: null }" 
+                             @mouseleave="timeout = setTimeout(() => open = false, 300)">
+                            <button @mouseenter="clearTimeout(timeout); open = true" 
+                                    @click="open = !open"
+                                    class="flex items-center space-x-2 text-gray-300 hover:text-yellow-400 transition duration-300">
+                                <img class="w-8 h-8 rounded-full border-2 border-yellow-500" 
+                                     src="<?php echo isset($_SESSION['user']['photoURL']) ? htmlspecialchars($_SESSION['user']['photoURL']) : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['user']['displayName']) . '&background=ffd700&color=1a242c'; ?>" 
+                                     alt="用戶頭像">
+                                <span class="font-medium"><?php echo htmlspecialchars($_SESSION['user']['displayName']); ?></span>
+                                <svg class="w-4 h-4 transition-transform" 
+                                     :class="{ 'rotate-180': open }"
+                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-100"
+                                 x-transition:enter-start="transform opacity-0 scale-95"
+                                 x-transition:enter-end="transform opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-75"
+                                 x-transition:leave-start="transform opacity-100 scale-100"
+                                 x-transition:leave-end="transform opacity-0 scale-95"
+                                 @mouseenter="clearTimeout(timeout); open = true"
+                                 @mouseleave="timeout = setTimeout(() => open = false, 300)"
+                                 @click.away="open = false"
+                                 class="absolute right-0 mt-2 w-48 bg-[#1a242c] rounded-lg shadow-lg border border-yellow-900/20 z-50">
+                                <div class="py-1">
+                                    <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-yellow-500/10 hover:text-yellow-400 transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                            <span>個人資料</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-yellow-500/10 hover:text-yellow-400 transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                            <span>我的收藏</span>
+                                        </div>
+                                    </a>
+                                    <div class="border-t border-yellow-900/20 my-1"></div>
+                                    <a href="logout.php" class="block px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                            </svg>
+                                            <span>登出</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <!-- 登入按鈕 -->
                         <a href="login.php" class="relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-bold text-yellow-500 transition-all duration-300 border-2 border-yellow-500 rounded-lg hover:border-yellow-400 group">
-                            <!-- 動畫背景 -->
                             <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-yellow-500 via-yellow-500/50 to-transparent"></span>
                             <span class="relative flex items-center gap-2">
-                                <!-- 登入圖標 -->
                                 <svg class="w-5 h-5 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                                 </svg>
                                 登入
-                                <!-- 裝飾性光效 -->
-                                <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-yellow-500 opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
                             </span>
                         </a>
                     <?php endif; ?>
                 </div>
-
-                <!-- 用戶資訊下拉選單 -->
-                <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                    <div class="relative group">
-                        <button class="flex items-center space-x-2 text-gray-300 hover:text-yellow-400 transition duration-300">
-                            <img class="w-8 h-8 rounded-full border-2 border-yellow-500" src="https://ui-avatars.com/api/?name=<?php echo urlencode($_SESSION['username']); ?>&background=ffd700&color=1a242c" alt="用戶頭像">
-                            <span class="font-medium"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                            <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="hidden group-hover:block absolute right-0 mt-2 w-48 bg-[#1a242c] rounded-lg shadow-lg border border-yellow-900/20">
-                            <!-- 用戶選單內容 -->
-                            <div class="py-1">
-                                <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-yellow-500/10 hover:text-yellow-400">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                    個人資料
-                                </a>
-                                <!-- 其他選單項目 -->
-                                <div class="border-t border-yellow-900/20"></div>
-                                <a href="logout.php" class="flex items-center px-4 py-2 text-sm text-red-400 hover:bg-red-500/10">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                    </svg>
-                                    登出
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
 
                 <!-- 手機版選單按鈕 -->
                 <div class="md:hidden">

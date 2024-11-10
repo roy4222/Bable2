@@ -1,5 +1,11 @@
 <?php
 include 'includes/header.php';
+
+// 檢查是否已經登入
+if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+    header('location: index.php');
+    exit;
+}
 ?>
 
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -19,8 +25,12 @@ include 'includes/header.php';
                 <p class="mt-2 text-gray-400">創建您的帳號，開始探索宅文化的世界</p>
             </div>
 
-            <!-- 註冊表單 -->
-            <form onsubmit="event.preventDefault(); handleRegister(this.email.value, this.password.value, this.username.value);" class="space-y-6">
+            <!-- 錯誤訊息顯示區域 -->
+            <div id="error-message" class="bg-red-900/20 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg mb-6" style="display: none;">
+            </div>
+
+            <!-- 修改這裡：更新表單的 onsubmit 處理方式 -->
+            <form id="registerForm" class="space-y-6">
                 <!-- 用戶名輸入框 -->
                 <div>
                     <label for="username" class="block text-sm font-medium text-yellow-500 mb-1">
@@ -139,4 +149,131 @@ include 'includes/header.php';
         </div>
     </div>
 </div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-auth-compat.js"></script>
+
+<script>
+// 等待 DOM 完全載入
+window.addEventListener('DOMContentLoaded', function() {
+    const registerForm = document.querySelector('#registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleSubmit);
+    }
+});
+
+async function handleSubmit(e) {
+    e.preventDefault();
+    
+    try {
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+
+        console.log('開始註冊流程...');
+        
+        // 檢查密碼確認
+        if (password !== confirmPassword) {
+            showError('兩次輸入的密碼不相符');
+            return;
+        }
+
+        // 檢查密碼長度
+        if (password.length < 6) {
+            showError('密碼長度必須至少為 6 個字符');
+            return;
+        }
+
+        console.log('正在創建用戶...');
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        
+        console.log('用戶創建成功，正在更新資料...');
+        await userCredential.user.updateProfile({
+            displayName: username
+        });
+
+        console.log('正在寫入 Firestore...');
+        await firebase.firestore().collection('users').doc(userCredential.user.uid).set({
+            username: username,
+            email: email,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // 顯示成功訊息
+        showGlobalToast('註冊成功！請重新登入', 'success');
+
+        // 1.5秒後重定向到登入頁面
+        setTimeout(() => {
+            window.location.href = 'login.php';
+        }, 1500);
+
+    } catch (error) {
+        console.error('註冊錯誤:', error);
+        console.error('錯誤代碼:', error.code);
+        console.error('錯誤訊息:', error.message);
+        showError(getErrorMessage(error.code));
+    }
+}
+
+// 創建 session
+async function createSession(user) {
+    try {
+        const response = await fetch('create_session.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName,
+                photoURL: user.photoURL
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Session 創建失敗');
+        }
+        
+        return response.json();
+    } catch (error) {
+        console.error('Session 創建錯誤:', error);
+        throw error;
+    }
+}
+
+// 顯示錯誤訊息
+function showError(message) {
+    const errorDiv = document.getElementById('error-message');
+    if (errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        console.log('顯示錯誤訊息:', message);
+    }
+}
+
+// 錯誤訊息轉換
+function getErrorMessage(errorCode) {
+    switch (errorCode) {
+        case 'auth/email-already-in-use':
+            return '此電子郵件已被使用';
+        case 'auth/invalid-email':
+            return '無效的電子郵件格式';
+        case 'auth/operation-not-allowed':
+            return '此操作不被允許';
+        case 'auth/weak-password':
+            return '密碼強度太弱';
+        case 'auth/network-request-failed':
+            return '網絡連接失敗，請檢查您的網絡連接';
+        default:
+            return '註冊失敗，請稍後再試';
+    }
+}
+</script>
+
+
+
 

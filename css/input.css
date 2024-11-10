@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 自定義樣式 */
+@layer base {
+    body {
+        @apply bg-[#1a242c] text-gray-100;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply bg-yellow-500 text-gray-900 py-2 px-4 rounded-lg hover:bg-yellow-400 transition duration-300 font-bold;
+    }
+
+    .btn-secondary {
+        @apply bg-[#242e38] text-gray-300 py-2 px-4 rounded-lg hover:bg-[#2a3642] transition duration-300 border border-gray-700;
+    }
+
+    .input-field {
+        @apply w-full pl-10 pr-4 py-2 bg-[#242e38] border border-gray-700 text-gray-300 rounded-lg focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-300;
+    }
+
+    .card {
+        @apply bg-[#1a242c] rounded-xl shadow-2xl border border-yellow-900/20 p-8;
+    }
+}
