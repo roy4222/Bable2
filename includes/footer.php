@@ -39,7 +39,7 @@
                     <ul class="space-y-2 text-sm sm:text-base">
                         <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">動漫專區</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">遊戲專區</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">科技專區</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">複製文專區</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">討論區</a></li>
                     </ul>
                 </div>
@@ -58,7 +58,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
-                            <span class="flex-1">秋葉原數位大樓</span>
+                            <span class="flex-1">101大樓</span>
                         </li>
                     </ul>
                 </div>

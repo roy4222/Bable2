@@ -86,13 +86,13 @@ require_once dirname(__DIR__) . '/includes/header.php';
                     <svg class="w-4 h-4 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    2024/03/15
+                    2024/11/11
                 </div>
                 <h3 class="font-bold text-lg text-yellow-400 group-hover:text-yellow-300 mb-2">
-                    《鬼滅之刃》最新劇場版發布
+                    《佳樹寶寶》全新版本震撼上線
                 </h3>
                 <p class="text-gray-400 group-hover:text-gray-300">
-                    劇場版預計於今年夏季上映，帶來更震撼的視覺饗宴，無限列車篇將再次震撼觀眾...
+                    佳樹寶寶再度升級，全新版本帶來極致視覺享受，天氣功能全面進化，為您呈現更生動的體驗！
                 </p>
             </div>
 
@@ -102,14 +102,13 @@ require_once dirname(__DIR__) . '/includes/header.php';
                     <svg class="w-4 h-4 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    2024/03/14
+                    2024/11/02
                 </div>
                 <h3 class="font-bold text-lg text-yellow-400 group-hover:text-yellow-300 mb-2">
-                    最新遊戲主機發布會預告
+                    《溫水line bot》全新版本登場
                 </h3>
                 <p class="text-gray-400 group-hover:text-gray-300">
-                    次世代主機性能提升50%，支援8K遊戲畫質，預計年底發售...
-                </p>
+                    溫水Line Bot重磅更新，全新聊天功能讓互動更流暢、更有趣，快來體驗全新對話的魅力！
             </div>
         </div>
     </div>
