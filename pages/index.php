@@ -1,10 +1,10 @@
 <?php
-include 'includes/header.php';
+require_once dirname(__DIR__) . '/includes/header.php';
 ?>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- 英雄區域 -->
-    <div class="bg-[#1a242c] rounded-xl p-6 sm:p-12 mb-12 relative overflow-hidden border border-yellow-900/20">
+    <!-- 英雄區域 - 加強邊框和陰影 -->
+    <div class="bg-[#1a242c] rounded-xl p-6 sm:p-12 mb-12 relative overflow-hidden border-2 border-yellow-500/30 shadow-[0_0_15px_rgba(234,179,8,0.15)]">
         <!-- 科技感背景動畫 -->
         <div class="absolute inset-0 opacity-10">
             <div class="absolute inset-0 bg-grid-pattern animate-pulse"></div>
@@ -45,31 +45,31 @@ include 'includes/header.php';
             熱門專區
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- 動漫卡片 -->
-            <div class="group bg-[#1a242c] rounded-xl p-6 hover:bg-[#242e38] transition-all duration-300 border border-yellow-900/20 hover:border-yellow-500/50">
+            <!-- 動漫卡片 - 加強邊框和陰影 -->
+            <div class="group bg-[#1a242c] rounded-xl p-6 hover:bg-[#242e38] transition-all duration-300 border-2 border-yellow-500/30 hover:border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.1)] hover:shadow-[0_0_20px_rgba(234,179,8,0.2)]">
                 <div class="text-3xl mb-4">🎬</div>
                 <h3 class="text-xl font-bold mb-3 text-yellow-400 group-hover:text-yellow-300">動漫專區</h3>
                 <p class="text-gray-400 group-hover:text-gray-300">追番、評論、角色介紹，這裡就是你的二次元天地。</p>
             </div>
 
-            <!-- 遊戲卡片 -->
-            <div class="group bg-[#1a242c] rounded-xl p-6 hover:bg-[#242e38] transition-all duration-300 border border-yellow-900/20 hover:border-yellow-500/50">
+            <!-- 遊戲卡片 - 加強邊框和陰影 -->
+            <div class="group bg-[#1a242c] rounded-xl p-6 hover:bg-[#242e38] transition-all duration-300 border-2 border-yellow-500/30 hover:border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.1)] hover:shadow-[0_0_20px_rgba(234,179,8,0.2)]">
                 <div class="text-3xl mb-4">🎮</div>
                 <h3 class="text-xl font-bold mb-3 text-yellow-400 group-hover:text-yellow-300">遊戲專區</h3>
                 <p class="text-gray-400 group-hover:text-gray-300">電競新聞、遊戲攻略、實況直播，一手掌握遊戲資訊。</p>
             </div>
 
-            <!-- 科技卡片 -->
-            <div class="group bg-[#1a242c] rounded-xl p-6 hover:bg-[#242e38] transition-all duration-300 border border-yellow-900/20 hover:border-yellow-500/50">
-                <div class="text-3xl mb-4">💻</div>
-                <h3 class="text-xl font-bold mb-3 text-yellow-400 group-hover:text-yellow-300">科技專區</h3>
-                <p class="text-gray-400 group-hover:text-gray-300">最新科技趨勢、數碼產品評測，掌握科技脈動。</p>
+            <!-- 複製文專區 (原科技專區) -->
+            <div class="group bg-[#1a242c] rounded-xl p-6 hover:bg-[#242e38] transition-all duration-300 border-2 border-yellow-500/30 hover:border-yellow-500/50">
+                <div class="text-3xl mb-4">📝</div>
+                <h3 class="text-xl font-bold mb-3 text-yellow-400 group-hover:text-yellow-300">複製文專區</h3>
+                <p class="text-gray-400 group-hover:text-gray-300">最新梗圖、有趣複製文、迷因分享，掌握網路流行趨勢。</p>
             </div>
         </div>
     </div>
 
-    <!-- 最新消息區 -->
-    <div class="bg-[#1a242c] rounded-xl p-6 sm:p-8 mb-12 border border-yellow-900/20">
+    <!-- 最新消息區 - 加強邊框和陰影 -->
+    <div class="bg-[#1a242c] rounded-xl p-6 sm:p-8 mb-12 border-2 border-yellow-500/30 shadow-[0_0_15px_rgba(234,179,8,0.15)]">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
             <h2 class="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">最新動態</h2>
             <a href="#" class="text-yellow-400 hover:text-yellow-300 font-semibold flex items-center">
@@ -80,8 +80,8 @@ include 'includes/header.php';
             </a>
         </div>
         <div class="space-y-6">
-            <!-- 新聞��片 1 -->
-            <div class="group bg-[#242e38] border border-yellow-900/20 hover:border-yellow-500/50 p-4 rounded-lg transition-all duration-300">
+            <!-- 新聞片 1 -->
+            <div class="group bg-[#242e38] border-1 border-yellow-500/20 hover:border-yellow-500/40 p-4 rounded-lg transition-all duration-300 shadow-[0_0_10px_rgba(234,179,8,0.1)] hover:shadow-[0_0_15px_rgba(234,179,8,0.2)]">
                 <div class="flex items-center text-sm text-gray-500 mb-2">
                     <svg class="w-4 h-4 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -97,7 +97,7 @@ include 'includes/header.php';
             </div>
 
             <!-- 新聞卡片 2 -->
-            <div class="group bg-[#242e38] border border-yellow-900/20 hover:border-yellow-500/50 p-4 rounded-lg transition-all duration-300">
+            <div class="group bg-[#242e38] border-1 border-yellow-500/20 hover:border-yellow-500/40 p-4 rounded-lg transition-all duration-300 shadow-[0_0_10px_rgba(234,179,8,0.1)] hover:shadow-[0_0_15px_rgba(234,179,8,0.2)]">
                 <div class="flex items-center text-sm text-gray-500 mb-2">
                     <svg class="w-4 h-4 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -127,4 +127,6 @@ include 'includes/header.php';
 }
 </style>
 
-<?php include 'includes/footer.php'; ?>
+<?php 
+require_once dirname(__DIR__) . '/includes/footer.php';
+?>

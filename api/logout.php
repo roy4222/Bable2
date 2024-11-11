@@ -13,6 +13,6 @@ if (isset($_COOKIE[session_name()])) {
 session_destroy();
 
 // 重定向到首頁
-header('Location: index.php');
+header('Location: /bable1/pages/index.php');
 exit;
 ?> 

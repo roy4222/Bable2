@@ -1,16 +1,18 @@
 <?php
-include 'includes/header.php';
+require_once dirname(__DIR__) . '/includes/header.php';
 
 // 檢查是否已經登入
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     header('location: index.php');
     exit;
 }
+
+$firebaseConfig = require_once dirname(__DIR__) . '/config/firebase-config.php';
 ?>
 
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full">
-        <!-- 註冊卡片 -->
+        <!-- 登入卡片 -->
         <div class="bg-[#1a242c] rounded-xl shadow-2xl border border-yellow-900/20 p-8">
             <!-- Logo -->
             <div class="text-center mb-8">
@@ -20,34 +22,16 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                     </svg>
                 </div>
                 <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
-                    加入 Bable
+                    歡迎回到 Bable
                 </h2>
-                <p class="mt-2 text-gray-400">創建您的帳號，開始探索宅文化的世界</p>
+                <p class="mt-2 text-gray-400">登入以獲得完整體驗</p>
             </div>
 
             <!-- 錯誤訊息顯示區域 -->
             <div id="error-message" class="bg-red-900/20 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg mb-6" style="display: none;">
             </div>
 
-            <!-- 修改這裡：更新表單的 onsubmit 處理方式 -->
-            <form id="registerForm" class="space-y-6">
-                <!-- 用戶名輸入框 -->
-                <div>
-                    <label for="username" class="block text-sm font-medium text-yellow-500 mb-1">
-                        用戶名稱
-                    </label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </div>
-                        <input type="text" id="username" name="username" required
-                               class="w-full pl-10 pr-4 py-2 bg-[#242e38] border border-gray-700 text-gray-300 rounded-lg focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-300"
-                               placeholder="請輸入用戶名稱">
-                    </div>
-                </div>
-
+            <form id="loginForm" class="space-y-6">
                 <!-- 電子郵件輸入框 -->
                 <div>
                     <label for="email" class="block text-sm font-medium text-yellow-500 mb-1">
@@ -82,30 +66,27 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                     </div>
                 </div>
 
-                <!-- 確認密碼輸入框 -->
-                <div>
-                    <label for="confirm_password" class="block text-sm font-medium text-yellow-500 mb-1">
-                        確認密碼
-                    </label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                        </div>
-                        <input type="password" id="confirm_password" name="confirm_password" required
-                               class="w-full pl-10 pr-4 py-2 bg-[#242e38] border border-gray-700 text-gray-300 rounded-lg focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-300"
-                               placeholder="請再次輸入密碼">
+                <!-- 記住我和忘記密碼 -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" name="remember"
+                               class="h-4 w-4 bg-[#242e38] border-gray-700 rounded text-yellow-500 focus:ring-yellow-500 focus:ring-offset-0">
+                        <label for="remember" class="ml-2 block text-sm text-gray-400">
+                            記住我
+                        </label>
                     </div>
+                    <a href="#" class="text-sm text-yellow-500 hover:text-yellow-400 transition duration-300">
+                        忘記密碼？
+                    </a>
                 </div>
 
-                <!-- 註冊按鈕 -->
+                <!-- 登入按鈕 -->
                 <button type="submit"
                         class="w-full bg-yellow-500 text-gray-900 py-2 px-4 rounded-lg hover:bg-yellow-400 transition duration-300 font-bold flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                     </svg>
-                    立即註冊
+                    登入
                 </button>
 
                 <!-- 分隔線 -->
@@ -136,12 +117,12 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                     </button>
                 </div>
 
-                <!-- 登入提示 -->
+                <!-- 註冊提示 -->
                 <div class="text-center mt-6">
                     <p class="text-gray-400">
-                        已經有帳號了？
-                        <a href="login.php" class="text-yellow-500 hover:text-yellow-400 transition duration-300 font-medium">
-                            立即登入
+                        還沒有帳號？
+                        <a href="register.php" class="text-yellow-500 hover:text-yellow-400 transition duration-300 font-medium">
+                            立即註冊
                         </a>
                     </p>
                 </div>
@@ -157,63 +138,84 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 <script>
 // 等待 DOM 完全載入
 window.addEventListener('DOMContentLoaded', function() {
-    const registerForm = document.querySelector('#registerForm');
-    if (registerForm) {
-        registerForm.addEventListener('submit', handleSubmit);
+    const loginForm = document.querySelector('#loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // 禁用提交按鈕
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+
+            try {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+                await createSession(userCredential.user);
+
+                // 顯示成功訊息
+                showSuccess('登入成功！');
+                
+                // 延遲跳轉
+                setTimeout(() => {
+                    window.location.href = 'index.php';
+                }, 1000);
+
+            } catch (error) {
+                console.error('登入錯誤:', error);
+                showError(getErrorMessage(error.code));
+                
+                // 重新啟用提交按鈕
+                if (submitButton) {
+                    submitButton.disabled = false;
+                }
+            }
+        });
     }
 });
 
-async function handleSubmit(e) {
-    e.preventDefault();
-    
+
+// 在 login.php 的 script 標籤中添加這個函數
+function showSuccess(message) {
+    // 使用 header.php 中定義的 showGlobalToast 函數
+    if (typeof showGlobalToast === 'function') {
+        showGlobalToast(message, 'success');
+    }
+
+    // 同時也更新錯誤訊息區域為成功樣式
+    const successDiv = document.getElementById('error-message');
+    if (successDiv) {
+        successDiv.style.backgroundColor = 'rgba(22, 101, 52, 0.2)';  // 深綠色背景
+        successDiv.style.borderColor = 'rgba(34, 197, 94, 0.2)';      // 綠色邊框
+        successDiv.style.color = '#4ade80';                           // 綠色文字
+        successDiv.textContent = message;
+        successDiv.style.display = 'block';
+    }
+}
+
+// Discord 登入
+async function signInWithDiscord() {
+    const provider = new firebase.auth.OAuthProvider('discord.com');
     try {
-        const username = document.getElementById('username').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirm_password').value;
-
-        console.log('開始註冊流程...');
-        
-        // 檢查密碼確認
-        if (password !== confirmPassword) {
-            showError('兩次輸入的密碼不相符');
-            return;
-        }
-
-        // 檢查密碼長度
-        if (password.length < 6) {
-            showError('密碼長度必須至少為 6 個字符');
-            return;
-        }
-
-        console.log('正在創建用戶...');
-        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-        
-        console.log('用戶創建成功，正在更新資料...');
-        await userCredential.user.updateProfile({
-            displayName: username
-        });
-
-        console.log('正在寫入 Firestore...');
-        await firebase.firestore().collection('users').doc(userCredential.user.uid).set({
-            username: username,
-            email: email,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        // 顯示成功訊息
-        showGlobalToast('註冊成功！請重新登入', 'success');
-
-        // 1.5秒後重定向到登入頁面
-        setTimeout(() => {
-            window.location.href = 'login.php';
-        }, 1500);
-
+        const result = await firebase.auth().signInWithPopup(provider);
+        await createSession(result.user);
+        window.location.href = 'index.php';
     } catch (error) {
-        console.error('註冊錯誤:', error);
-        console.error('錯誤代碼:', error.code);
-        console.error('錯誤訊息:', error.message);
+        showError(getErrorMessage(error.code));
+    }
+}
+
+// GitHub 登入
+async function signInWithGithub() {
+    const provider = new firebase.auth.GithubAuthProvider();
+    try {
+        const result = await firebase.auth().signInWithPopup(provider);
+        await createSession(result.user);
+        window.location.href = 'index.php';
+    } catch (error) {
         showError(getErrorMessage(error.code));
     }
 }
@@ -221,7 +223,7 @@ async function handleSubmit(e) {
 // 創建 session
 async function createSession(user) {
     try {
-        const response = await fetch('create_session.php', {
+        const response = await fetch('/bable1/api/create_session.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -248,30 +250,27 @@ async function createSession(user) {
 // 顯示錯誤訊息
 function showError(message) {
     const errorDiv = document.getElementById('error-message');
-    if (errorDiv) {
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
-        console.log('顯示錯誤訊息:', message);
-    }
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
 }
 
 // 錯誤訊息轉換
 function getErrorMessage(errorCode) {
     switch (errorCode) {
-        case 'auth/email-already-in-use':
-            return '此電子郵件已被使用';
         case 'auth/invalid-email':
             return '無效的電子郵件格式';
-        case 'auth/operation-not-allowed':
-            return '此操作不被允許';
-        case 'auth/weak-password':
-            return '密碼強度太弱';
-        case 'auth/network-request-failed':
-            return '網絡連接失敗，請檢查您的網絡連接';
+        case 'auth/user-disabled':
+            return '此帳號已被停用';
+        case 'auth/user-not-found':
+            return '找不到此用戶';
+        case 'auth/wrong-password':
+            return '密碼錯誤';
         default:
-            return '註冊失敗，請稍後再試';
+            return '登入失敗，請稍後再試';
     }
 }
+
+
 </script>
 
 

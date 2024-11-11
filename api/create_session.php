@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 session_start();
 
 // 接收 POST 數據

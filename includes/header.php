@@ -7,7 +7,8 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bable</title>
-    <link href="css/output.css" rel="stylesheet">
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu6w1L1n_jpEO94b80gNhWHTvkpCtCHvui2Q&s">
+    <link href="/bable1/assets/css/output.css" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -88,7 +89,25 @@ session_start();
                 }
             };
 
-            // 移動選單點擊事件
+            // 添加子選單切換功能
+            window.toggleMobileSubmenu = function(id) {
+                const submenu = document.getElementById(id);
+                const button = submenu.previousElementSibling;
+                const arrow = button.querySelector('svg');
+                
+                if (submenu) {
+                    submenu.classList.toggle('hidden');
+                    
+                    // 旋轉箭頭
+                    if (submenu.classList.contains('hidden')) {
+                        arrow.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrow.style.transform = 'rotate(180deg)';
+                    }
+                }
+            };
+
+            // 點擊背景關閉選單
             const mobileMenu = document.getElementById('mobile-menu');
             if (mobileMenu) {
                 mobileMenu.addEventListener('click', function(e) {
@@ -160,38 +179,21 @@ session_start();
         }, 3000);
     }
 
-    // 監聽登入、註冊和登出事件
-    document.addEventListener('DOMContentLoaded', function() {
-        // 登入表單
-        const loginForm = document.getElementById('loginForm');
-        if (loginForm) {
-            loginForm.addEventListener('submit', function(e) {
-                // 在表單提交成功後
-                showGlobalToast('登入成功！', 'success');
-            });
-        }
-
-        // 註冊表單
-        const registerForm = document.getElementById('registerForm');
-        if (registerForm) {
-            registerForm.addEventListener('submit', function(e) {
-                // 在表單提交成功後
-                showGlobalToast('註冊成功！', 'success');
-            });
-        }
-
-        // 登出按鈕
-        const logoutButton = document.querySelector('a[href="logout.php"]');
-        if (logoutButton) {
-            logoutButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                showGlobalToast('登出成功！', 'success');
-                setTimeout(() => {
-                    window.location.href = 'logout.php';
-                }, 1500);
-            });
-        }
-    });
+            // 監聽登入、註冊和登出事件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 只保留登出按鈕的處理
+            const logoutButton = document.querySelector('a[href="/bable1/api/logout.php"]');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showGlobalToast('登出成功！', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/bable1/api/logout.php';
+                    }, 1500);
+                });
+            }
+        });
+    
     </script>
 
     <header class="bg-[#1a242c]/90 backdrop-blur-md border-b border-yellow-900/20 sticky top-0 z-50">
@@ -254,10 +256,10 @@ session_start();
                         </div>
                     </div>
 
-                    <!-- 科技專區下拉選單 -->
+                    <!-- 複製文專區下拉選單 -->
                     <div class="relative group">
                         <button class="text-gray-300 hover:text-yellow-400 font-medium transition duration-300 flex items-center group py-2">
-                            科技專區
+                            複製文專區
                             <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
@@ -265,14 +267,14 @@ session_start();
                         <div class="hidden group-hover:block absolute right-0 pt-2 w-48">
                             <div class="absolute -inset-2 bg-transparent"></div>
                             <div class="relative bg-[#1a242c] rounded-lg shadow-lg border border-yellow-900/20 overflow-hidden">
-                                <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-yellow-500/10 hover:text-yellow-400 transition-colors">數碼產品</a>
-                                <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-yellow-500/10 hover:text-yellow-400 transition-colors">科技新聞</a>
-                                <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-yellow-500/10 hover:text-yellow-400 transition-colors">評測報告</a>
+                                <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-yellow-500/10 hover:text-yellow-400 transition-colors">最新梗圖</a>
+                                <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-yellow-500/10 hover:text-yellow-400 transition-colors">熱門複製文</a>
+                                <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-yellow-500/10 hover:text-yellow-400 transition-colors">迷因分享</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 科技專區下拉選單 -->
+                    <!-- 討論區下拉選單 -->
                     <div class="relative group">
                         <button class="text-gray-300 hover:text-yellow-400 font-medium transition duration-300 flex items-center group py-2">
                         討論區
@@ -336,7 +338,7 @@ session_start();
                                         </div>
                                     </a>
                                     <div class="border-t border-yellow-900/20 my-1"></div>
-                                    <a href="logout.php" class="block px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-all duration-200">
+                                    <a href="/bable1/api/logout.php" class="block px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-all duration-200">
                                         <div class="flex items-center">
                                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -432,19 +434,19 @@ session_start();
                                 </div>
                             </div>
 
-                            <!-- 科技專區 -->
+                            <!-- 複製文專區 -->
                             <div class="space-y-2">
-                                <button onclick="toggleMobileSubmenu('tech-mobile')" 
+                                <button onclick="toggleMobileSubmenu('copypasta-mobile')" 
                                         class="w-full flex items-center justify-between text-gray-300 hover:text-yellow-400 p-2 hover:bg-yellow-500/10 rounded-lg transition-colors">
-                                    <span>科技專區</span>
+                                    <span>複製文專區</span>
                                     <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                     </svg>
                                 </button>
-                                <div id="tech-mobile" class="hidden pl-4 space-y-2 bg-gray-800/50 rounded-lg">
-                                    <a href="#" class="block p-2 text-gray-400 hover:text-yellow-400">數碼產品</a>
-                                    <a href="#" class="block p-2 text-gray-400 hover:text-yellow-400">科技新聞</a>
-                                    <a href="#" class="block p-2 text-gray-400 hover:text-yellow-400">評測報告</a>
+                                <div id="copypasta-mobile" class="hidden pl-4 space-y-2 bg-gray-800/50 rounded-lg">
+                                    <a href="#" class="block p-2 text-gray-400 hover:text-yellow-400">最新梗圖</a>
+                                    <a href="#" class="block p-2 text-gray-400 hover:text-yellow-400">熱門複製文</a>
+                                    <a href="#" class="block p-2 text-gray-400 hover:text-yellow-400">迷因分享</a>
                                 </div>
                             </div>
 
@@ -486,9 +488,9 @@ session_start();
                             <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                                 <div class="flex items-center space-x-3 mb-4">
                                     <img class="w-10 h-10 rounded-full border-2 border-yellow-500" 
-                                         src="https://ui-avatars.com/api/?name=<?php echo urlencode($_SESSION['username']); ?>&background=ffd700&color=1a242c" 
+                                         src="<?php echo isset($_SESSION['user']['photoURL']) ? htmlspecialchars($_SESSION['user']['photoURL']) : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['user']['displayName']) . '&background=ffd700&color=1a242c'; ?>" 
                                          alt="用戶頭像">
-                                    <span class="font-medium text-gray-300"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                                    <span class="font-medium text-gray-300"><?php echo htmlspecialchars($_SESSION['user']['displayName']); ?></span>
                                 </div>
                                 <div class="space-y-2">
                                     <a href="#" class="flex items-center text-gray-300 hover:text-yellow-400 p-2 hover:bg-yellow-500/10 rounded-lg">
@@ -503,7 +505,7 @@ session_start();
                                         </svg>
                                         我的收藏
                                     </a>
-                                    <a href="logout.php" class="flex items-center text-red-400 hover:text-red-300 p-2 hover:bg-red-500/10 rounded-lg">
+                                    <a href="/bable1/api/logout.php" class="flex items-center text-red-400 hover:text-red-300 p-2 hover:bg-red-500/10 rounded-lg">
                                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                         </svg>
