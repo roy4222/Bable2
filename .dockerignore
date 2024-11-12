@@ -1,0 +1,17 @@
+.git
+.env
+.env.*
+*.log
+.gitignore
+README.md
+Dockerfile
+.vscode
+.idea
+node_modules
+vendor
+storage/*.key
+storage/logs/*
+storage/framework/sessions/*
+tests
+docs
+docker-compose.yml

@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__) . '/includes/header.php';
+require_once dirname(__FILE__) . '/includes/header.php';
 ?>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -127,5 +127,5 @@ require_once dirname(__DIR__) . '/includes/header.php';
 </style>
 
 <?php 
-require_once dirname(__DIR__) . '/includes/footer.php';
+require_once dirname(__FILE__) . '/includes/footer.php';
 ?>

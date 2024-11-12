@@ -3,7 +3,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
 // 檢查是否已經登入
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header('location: index.php');
+    header('location: /index.php');
     exit;
 }
 
@@ -121,7 +121,7 @@ $firebaseConfig = require_once dirname(__DIR__) . '/config/firebase-config.php';
                 <div class="text-center mt-6">
                     <p class="text-gray-400">
                         還沒有帳號？
-                        <a href="register.php" class="text-yellow-500 hover:text-yellow-400 transition duration-300 font-medium">
+                        <a href="/pages/register.php" class="text-yellow-500 hover:text-yellow-400 transition duration-300 font-medium">
                             立即註冊
                         </a>
                     </p>
@@ -161,7 +161,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 
                 // 延遲跳轉
                 setTimeout(() => {
-                    window.location.href = 'index.php';
+                    window.location.href = '/index.php';
                 }, 1000);
 
             } catch (error) {
@@ -202,7 +202,7 @@ async function signInWithDiscord() {
     try {
         const result = await firebase.auth().signInWithPopup(provider);
         await createSession(result.user);
-        window.location.href = 'index.php';
+        window.location.href = '/index.php';
     } catch (error) {
         showError(getErrorMessage(error.code));
     }
@@ -214,7 +214,7 @@ async function signInWithGithub() {
     try {
         const result = await firebase.auth().signInWithPopup(provider);
         await createSession(result.user);
-        window.location.href = 'index.php';
+        window.location.href = '/index.php';
     } catch (error) {
         showError(getErrorMessage(error.code));
     }
@@ -223,7 +223,7 @@ async function signInWithGithub() {
 // 創建 session
 async function createSession(user) {
     try {
-        const response = await fetch('/bable1/api/create_session.php', {
+        const response = await fetch('/api/create_session.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

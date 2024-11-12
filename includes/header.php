@@ -8,20 +8,20 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bable</title>
     <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu6w1L1n_jpEO94b80gNhWHTvkpCtCHvui2Q&s">
-    <link href="/bable1/assets/css/output.css" rel="stylesheet">
+    <link href="/assets/css/output.css" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyBBI9_7d2eQoWA9qGhBx4q-CKizJ2T0ikY",
-            authDomain: "bable1.firebaseapp.com",
-            databaseURL: "https://bable1-default-rtdb.firebaseio.com",
-            projectId: "bable1",
-            storageBucket: "bable1.firebasestorage.app",
-            messagingSenderId: "206369386530",
-            appId: "1:206369386530:web:2fe45b2f2a7470eb80da7b"
+            apiKey: "<?php echo getenv('FIREBASE_API_KEY'); ?>",
+            authDomain: "<?php echo getenv('FIREBASE_AUTH_DOMAIN'); ?>",
+            databaseURL: "<?php echo getenv('FIREBASE_DATABASE_URL'); ?>",
+            projectId: "<?php echo getenv('FIREBASE_PROJECT_ID'); ?>",
+            storageBucket: "<?php echo getenv('FIREBASE_STORAGE_BUCKET'); ?>",
+            messagingSenderId: "<?php echo getenv('FIREBASE_MESSAGING_SENDER_ID'); ?>",
+            appId: "<?php echo getenv('FIREBASE_APP_ID'); ?>"
         };
 
         // 初始化 Firebase
@@ -200,7 +200,7 @@ session_start();
         <nav class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
                 <!-- Logo 區域 -->
-                <a href="index.php" class="flex items-center space-x-2 group">
+                <a href="/index.php" class="flex items-center space-x-2 group">
                     <svg class="w-8 h-8 text-yellow-500 transform transition-transform group-hover:scale-110 group-hover:rotate-12 duration-300" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
                     </svg>
@@ -218,7 +218,7 @@ session_start();
 
                 <!-- 導航選項和用戶資訊 -->
                 <div class="hidden md:flex items-center space-x-6">
-                    <a href="index.php" class="text-gray-300 hover:text-yellow-400 font-medium transition duration-300">首頁</a>
+                    <a href="/index.php" class="text-gray-300 hover:text-yellow-400 font-medium transition duration-300">首頁</a>
                     
                     <!-- 動漫專區下拉選單 -->
                     <div class="relative group">
@@ -274,7 +274,7 @@ session_start();
                         </div>
                     </div>
 
-                    <!-- 討論區下拉選單 -->
+                    <!-- 討論區下拉單 -->
                     <div class="relative group">
                         <button class="text-gray-300 hover:text-yellow-400 font-medium transition duration-300 flex items-center group py-2">
                         討論區
@@ -338,7 +338,7 @@ session_start();
                                         </div>
                                     </a>
                                     <div class="border-t border-yellow-900/20 my-1"></div>
-                                    <a href="/bable1/api/logout.php" class="block px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-all duration-200">
+                                    <a href="/api/logout.php" class="block px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-all duration-200">
                                         <div class="flex items-center">
                                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -351,7 +351,7 @@ session_start();
                         </div>
                     <?php else: ?>
                         <!-- 登入按鈕 -->
-                        <a href="login.php" class="relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-bold text-yellow-500 transition-all duration-300 border-2 border-yellow-500 rounded-lg hover:border-yellow-400 group">
+                        <a href="/pages/login.php" class="relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-bold text-yellow-500 transition-all duration-300 border-2 border-yellow-500 rounded-lg hover:border-yellow-400 group">
                             <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-yellow-500 via-yellow-500/50 to-transparent"></span>
                             <span class="relative flex items-center gap-2">
                                 <svg class="w-5 h-5 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -505,7 +505,7 @@ session_start();
                                         </svg>
                                         我的收藏
                                     </a>
-                                    <a href="/bable1/api/logout.php" class="flex items-center text-red-400 hover:text-red-300 p-2 hover:bg-red-500/10 rounded-lg">
+                                    <a href="/api/logout.php" class="flex items-center text-red-400 hover:text-red-300 p-2 hover:bg-red-500/10 rounded-lg">
                                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                         </svg>
@@ -513,7 +513,7 @@ session_start();
                                     </a>
                                 </div>
                             <?php else: ?>
-                                <a href="login.php" class="flex items-center justify-center bg-yellow-500 text-gray-900 p-2 rounded-lg hover:bg-yellow-400 transition-colors font-medium">
+                                <a href="/pages/login.php" class="flex items-center justify-center bg-yellow-500 text-gray-900 p-2 rounded-lg hover:bg-yellow-400 transition-colors font-medium">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
                                     </svg>

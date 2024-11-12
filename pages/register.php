@@ -3,7 +3,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
 // 檢查是否已經登入
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header('location: index.php');
+    header('location: /index.php');
     exit;
 }
 ?>
@@ -194,7 +194,7 @@ async function handleSubmit(e) {
         
         // 延遲重定向
         setTimeout(() => {
-            window.location.href = '/bable1/pages/login.php';
+            window.location.href = '/pages/login.php';
         }, 1000);
 
     } catch (error) {

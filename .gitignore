@@ -35,4 +35,5 @@ yarn-error.log*
 
 config/firebase-config.php
 config/firebase-admin.php
+config/env.php
 bable1.json 
